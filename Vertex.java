@@ -1,107 +1,159 @@
 package assign07;
-
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-class Vertex<Type> implements Comparable<Vertex<Type>>{
-	
-    Type data;
-    LinkedList<Edge<Type>> edges;
-    double distance;        // BFS and Dijkstra
-    Vertex<Type> previous;  // path reconstruction
-    boolean visited;        // Dijkstra
-    int inDegree;           // topoSort
+/**
+ * This class represents a vertex in a graph.
+ *
+ * @author Abhinav Mishra and Thakshbir Singh Dhillon
+ * @version October 28, 2026
+ */
+class Vertex<Type> implements Comparable<Vertex<Type>>
+{
+    private Type data; // the data of the vertex
+    private LinkedList<Edge<Type>> edges; // edges from the vertex
+    private double distance; //the distance between vertexes
+    private Vertex<Type> previous;// the previous vertex to this vertex
+    private boolean visited;
+    private int inDegree; //the total number of edges coming in a vertex
     
-    
-    /*
+    /**
      * Creates a vertex with given data
      * 
      * @param the data this vertex represents
      */
-    public Vertex(Type data) {
+    public Vertex(Type data) 
+    {
     	this.data = data;
     	this.edges = new LinkedList<>();
     	resetState();
     	
     }
-   
-    public String toString() {	
-    	return data + " -> " + edges;
+   /**
+    * Returns a string like A -> B using data and edges.
+    */
+    public String toString() 
+    {	
+    	return this.data + " -> " + this.edges;
     }
     
-    /*
+    /**
      * Adds a directed edge from the vertex to the destination
      * 
      * @param destination the vertex this edge points to
      * @param weight of the edge
      */
-    public void addEdge(Vertex<Type> destination, double weight) {
-    	edges.add(new Edge<>(destination, weight));
+    public void addEdge(Vertex<Type> destination, double weight) 
+    {
+    	this.edges.add(new Edge<>(destination, weight));
     }
-    
-    
-    /*
-     * Getters and setters 
+    /**
+     * resets the state of the vertex by giving its distance as infinity and using the defaults for all the others.
      */
-    public void resetState() {
-    	distance = Double.POSITIVE_INFINITY;
-    	previous = null;
-    	visited = false;
-    	inDegree = 0;
+    public void resetState() 
+    {
+    	this.distance = Double.POSITIVE_INFINITY; // for unknown distance
+    	this.previous = null;
+    	this.visited = false;
+    	this.inDegree = 0;
     }
-    
-    public Type getData() {
-    	return data;
+    /**
+     * getter method for data
+     * @return the data
+     */
+    public Type getData() 
+    {
+    	return this.data;
     }
-    
-    public List<Edge<Type>> getEdges() {
-    	return Collections.unmodifiableList(edges);
+    /**
+     * returns a copy list of the edges.
+     * @return A list containing all the edges
+     */
+    public List<Edge<Type>> getEdges() 
+    {
+        List<Edge<Type>> copy = new ArrayList<>();
+        for (Edge<Type> edge : this.edges) 
+        {
+            copy.add(edge);
+        }
+        return copy;
     }
-    
-    public double getDistance() {
-    	return distance;
+    /**
+     * the distance from one vertex to the other
+     * @return a double representing the distance
+     */
+    public double getDistance() 
+    {
+    	return this.distance;
     }
-    
-    public void setDistance(double distance) {
+    /**
+     * sets the distance from a vertex to another
+     * @param distance a double reperesnting the distnace
+     */
+    public void setDistance(double distance) 
+    {
     	this.distance = distance;
     }
-    
-    public Vertex<Type> getPrevious() {
-		return previous;
+    /**
+     * return the previous vertex
+     * @return the previous vertex
+     */
+    public Vertex<Type> getPrevious() 
+    {
+		return this.previous;
 	}
-    
-    public void setPrevious(Vertex<Type> previous) {
+    /**
+     * sets the previous index
+     */
+    public void setPrevious(Vertex<Type> previous) 
+    {
 		this.previous = previous;
 	}
-    
-    public boolean isVisited() {
-    	return visited;
+    /**
+     * checks whether a vertex has been visited or not 
+     * @return true if visted, false otherwise.
+     */
+    public boolean isVisited() 
+    {
+    	return  this.visited;
     }
-    
-    public void setVisited(boolean visited) {
+    /**
+     * granted the value for visited vertex
+     */
+    public void setVisited(boolean visited) 
+    {
     	this.visited = visited;
     }
-    
-    public int getDegree() {
-    	return inDegree;
-    }
-    
-    public void incrementInDegree() {
-    	inDegree++;
-    }
-   
-    public void decrementInDegree() {
-		inDegree--;
-	}
-
-    /*
-     * Compares vertices by current distance so returns the closest in Dkjistra's algorithm
+    /**
+     * getter for the indegrees(number of degrees coming in the vertex)
+     * @return an int representing the inDegrees of a vertex
      */
-	@Override
-	public int compareTo(Vertex<Type> o1) {
-		return Double.compare(this.distance, o1.distance);
+    public int getDegree() 
+    {
+    	return this.inDegree;
+    }
+    /**
+     * increments the in degree of a vertex
+     */
+    public void incrementInDegree() 
+    {
+    	this.inDegree++;
+    }
+    /**
+     * decrements the in degree of a vertex
+     */
+    public void decrementInDegree() 
+    {
+		this.inDegree--;
 	}
+    /**
+     * Compares vertices by current distance so returns the closest in Dkjistra's algorithm. Uses descending order.
+     */
+    @Override
+    public int compareTo(Vertex<Type> other) 
+    {
+        return Double.compare(other.distance, this.distance);
+    }
 }
 
